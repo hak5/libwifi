@@ -22,7 +22,11 @@ set(LIBWIFI_VERSION "0.0.10")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu17")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wformat=2")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fstack-protector-strong -D_FORTIFY_SOURCE=2 ")
+
+if (DEFINED STACK_PROTECTION)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fstack-protector-strong -D_FORTIFY_SOURCE=2 ")
+endif (DEFINED STACK_PROTECTION)
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wmissing-prototypes -Wstrict-prototypes -Wno-cast-align")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
 
