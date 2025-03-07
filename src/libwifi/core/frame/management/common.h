@@ -32,6 +32,7 @@
  * receiver        - The receiver MAC address
  * bssid           - BSSID MAC address
  * ssid            - AP SSID
+ * ssid_len        - AP SSID tag length
  * hidden          - Hidden state boolean
  * channel         - BSS Channel
  * wps             - WPS state boolean
