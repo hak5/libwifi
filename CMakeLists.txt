@@ -24,14 +24,14 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu17")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wformat=2")
 
 if (DEFINED STACK_PROTECTION)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fstack-protector-strong -D_FORTIFY_SOURCE=2 ")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fstack-protector-strong -D_FORTIFY_SOURCE=2 -Wstack-protector")
 endif (DEFINED STACK_PROTECTION)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wmissing-prototypes -Wstrict-prototypes -Wno-cast-align")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2")
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "^(Apple)?Clang$")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Walloca -Wformat-security -Wnull-dereference -Wstack-protector")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Walloca -Wformat-security -Wnull-dereference")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wvla -Warray-bounds -Warray-bounds-pointer-arithmetic -Wassign-enum -Wbad-function-cast")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wconditional-uninitialized -Wfloat-equal -Wformat-type-confusion -Widiomatic-parentheses")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wimplicit-fallthrough -Wloop-analysis -Wpointer-arith")
@@ -41,8 +41,12 @@ else()
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wtrampolines -Walloca -Wvla -Warray-bounds=2 -Wimplicit-fallthrough=3 -Wtraditional-conversion")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wshift-overflow=2 -Wcast-qual -Wstringop-overflow=4 -Wconversion -Wlogical-op")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wduplicated-cond -Wduplicated-branches -Wformat-signedness -Wshadow -Wstrict-overflow=4 -Wundef")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wstrict-prototypes -Wswitch-default -Wswitch-enum -Wstack-usage=1000000 -Wcast-align=strict")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fstack-clash-protection -Wl,-z,relro -Wl,-z,now -Wl,-z,noexecstack -Wl,-z,separate-code")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wstrict-prototypes -Wswitch-default -Wswitch-enum")
+
+    if (DEFINED STACK_PROTECTION)
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wstack-usage=1000000")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fstack-clash-protection -Wl,-z,relro -Wl,-z,now -Wl,-z,noexecstack -Wl,-z,separate-code")
+    endif (DEFINED STACK_PROTECTION)
 endif(CMAKE_CXX_COMPILER_ID MATCHES "^(Apple)?Clang$")
 
 
