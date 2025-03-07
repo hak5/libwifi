@@ -23,8 +23,9 @@
  * Basic CRC32 implementation for getting the frame check sum of
  * a supplied message, usually frame data.
  */
-uint32_t libwifi_crc32(const unsigned char *message, int message_len) {
-    int i, j;
+uint32_t libwifi_crc32(const unsigned char *message, size_t message_len) {
+    size_t i;
+    int j;
     unsigned int byte, crc, mask;
     i = 0;
     crc = 0xFFFFFFFF;

@@ -26,7 +26,7 @@
  * @param message_len Length of the data buffer
  * @return CRC32 sum of the given buffer
  */
-uint32_t libwifi_crc32(const unsigned char *message, int message_len);
+uint32_t libwifi_crc32(const unsigned char *message, size_t message_len);
 
 /**
  * Calculate the frame checksum for an 802.11 frame.
