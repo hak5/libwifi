@@ -46,6 +46,7 @@ struct libwifi_bss {
     unsigned char receiver[6];
     unsigned char bssid[6];
     char ssid[33];
+    uint8_t ssid_len;
     int8_t hidden;
     uint8_t channel;
     uint8_t wps;
