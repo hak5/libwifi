@@ -16,7 +16,7 @@
 #ifndef LIBWIFI_CORE_BYTESWAP_H
 #define LIBWIFI_CORE_BYTESWAP_H
 
-#if __APPLE__
+#ifdef __APPLE__
 #include <libkern/OSByteOrder.h>
 
 #define BYTESWAP16(x) OSSwapInt16(x)

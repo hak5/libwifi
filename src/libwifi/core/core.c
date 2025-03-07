@@ -25,13 +25,13 @@ void libwifi_random_mac(unsigned char buf[6], unsigned char prefix[3]) {
     memset(buf, 0, 6);
     if (prefix != NULL) {
         memcpy(buf, prefix, 3);
-#if __APPLE__
+#ifdef __APPLE__
         arc4random_buf(buf + 3, 3);
 #else
         getrandom(buf + 3, 3, 0);
 #endif /* __APPLE__ */
     } else {
-#if __APPLE__
+#ifdef __APPLE__
         arc4random_buf(buf, 6);
 #else
         getrandom(buf, 6, 0);

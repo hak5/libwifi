@@ -19,7 +19,7 @@
 #include <errno.h>
 #include <stdint.h>
 
-#if !(__APPLE__)
+#ifndef __APPLE__
 #include <endian.h>
 #endif
 
