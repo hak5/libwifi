@@ -76,6 +76,8 @@ int libwifi_get_wifi_frame(struct libwifi_frame *fi, const unsigned char *frame,
                 case SUBTYPE_DATA_QOS_CF_POLL:
                     fi->flags |= LIBWIFI_FLAGS_IS_QOS;
                     break;
+                default:
+                    break;
             }
 
             if (fi->flags & LIBWIFI_FLAGS_IS_QOS) {
