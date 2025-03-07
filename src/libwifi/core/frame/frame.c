@@ -62,7 +62,7 @@ int libwifi_get_wifi_frame(struct libwifi_frame *fi, const unsigned char *frame,
         memcpy(fi->radiotap_info, &rtap_info, sizeof(struct libwifi_radiotap_info));
     }
 
-    struct libwifi_frame_ctrl *frame_control = (struct libwifi_frame_ctrl *) frame_data;
+    const struct libwifi_frame_ctrl *frame_control = (const struct libwifi_frame_ctrl *) frame_data;
 
     switch (frame_control->type) {
         case TYPE_DATA:
