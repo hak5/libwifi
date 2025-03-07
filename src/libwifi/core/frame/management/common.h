@@ -76,6 +76,7 @@ static inline void libwifi_free_bss(struct libwifi_bss *bss) {
  * receiver        - The receiver MAC address
  * bssid           - BSSID MAC address
  * ssid            - AP SSID
+ * ssid_len        - Length of SSID field
  * broadcast_ssid  - STA is broadcasting for SSID
  * tags            - List of tagged parameters
  */
@@ -86,6 +87,7 @@ struct libwifi_sta {
     unsigned char receiver[6];
     unsigned char bssid[6];
     char ssid[33];
+    uint8_t ssid_len;
     uint8_t broadcast_ssid;
     struct libwifi_tagged_parameters tags;
 };

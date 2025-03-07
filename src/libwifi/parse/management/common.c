@@ -57,6 +57,7 @@ void libwifi_handle_ssid_tag(void *target, int target_type, const char *tag_data
     } else if (target_type == LIBWIFI_STA) {
         struct libwifi_sta *sta = (struct libwifi_sta *) target;
         memcpy(sta->ssid, tag_data, tag_len);
+        sta->ssid_len = tag_len;
     }
 }
 
