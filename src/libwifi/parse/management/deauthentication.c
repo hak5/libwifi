@@ -50,15 +50,31 @@ int libwifi_parse_deauth(struct libwifi_parsed_deauth *deauth, struct libwifi_fr
     deauth->ordered = frame->frame_control.flags.ordered;
 
     if (deauth->ordered) {
+        if (frame->len < sizeof(struct libwifi_mgmt_ordered_frame_header)) {
+            return -EINVAL;
+        }
+
         memcpy(&deauth->frame_header.ordered, &frame->header.mgmt_ordered,
                sizeof(struct libwifi_mgmt_ordered_frame_header));
         tags_len = (frame->len - sizeof(struct libwifi_mgmt_ordered_frame_header) -
                     sizeof(struct libwifi_deauth_fixed_parameters));
     } else {
+        if (frame->len < sizeof(struct libwifi_mgmt_unordered_frame_header)) {
+            return -EINVAL;
+        }
+
         memcpy(&deauth->frame_header.unordered, &frame->header.mgmt_unordered,
                sizeof(struct libwifi_mgmt_unordered_frame_header));
         tags_len = (frame->len - sizeof(struct libwifi_mgmt_unordered_frame_header) -
                     sizeof(struct libwifi_deauth_fixed_parameters));
+    }
+
+    if (tags_len < 0) {
+        return -EINVAL;
+    }
+
+    if (frame->header_len + sizeof(struct libwifi_deauth_fixed_parameters) + tags_len > frame->len) {
+        return -EINVAL;
     }
 
     unsigned char *body = (unsigned char *) frame->body;
@@ -67,7 +83,7 @@ int libwifi_parse_deauth(struct libwifi_parsed_deauth *deauth, struct libwifi_fr
     body += sizeof(struct libwifi_deauth_fixed_parameters);
 
     deauth->tags.parameters = malloc(tags_len);
-    memcpy(&deauth->tags.parameters, body, tags_len);
+    memcpy(deauth->tags.parameters, body, tags_len);
     memcpy(&deauth->tags.length, &tags_len, sizeof(tags_len));
 
     return 0;

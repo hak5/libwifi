@@ -22,4 +22,10 @@
 
 int libwifi_parse_disassoc(struct libwifi_parsed_disassoc *disassoc, struct libwifi_frame *frame);
 
+static inline void libwifi_free_parse_diassoc(struct libwifi_parsed_disassoc *disassoc) {
+    if (disassoc->tags.parameters != NULL) {
+        free(disassoc->tags.parameters);
+    }
+}
+
 #endif /* LIBWIFI_PARSE_DISASSOC_H */

@@ -49,24 +49,40 @@ int libwifi_parse_disassoc(struct libwifi_parsed_disassoc *disassoc, struct libw
     disassoc->ordered = frame->frame_control.flags.ordered;
 
     if (disassoc->ordered) {
+        if (frame->len < sizeof(struct libwifi_mgmt_ordered_frame_header)) {
+            return -EINVAL;
+        }
+
         memcpy(&disassoc->frame_header.ordered, &frame->header.mgmt_ordered,
                sizeof(struct libwifi_mgmt_ordered_frame_header));
         tags_len = (frame->len - sizeof(struct libwifi_mgmt_ordered_frame_header) -
                     sizeof(struct libwifi_disassoc_fixed_parameters));
     } else {
+        if (frame->len < sizeof(struct libwifi_mgmt_unordered_frame_header)) {
+            return -EINVAL;
+        }
+
         memcpy(&disassoc->frame_header.unordered, &frame->header.mgmt_unordered,
                sizeof(struct libwifi_mgmt_unordered_frame_header));
         tags_len = (frame->len - sizeof(struct libwifi_mgmt_unordered_frame_header) -
                     sizeof(struct libwifi_disassoc_fixed_parameters));
     }
 
+    if (tags_len < 0) {
+        return -EINVAL;
+    }
+
+    if (frame->header_len + sizeof(struct libwifi_disassoc_fixed_parameters) + tags_len > frame->len) {
+        return -EINVAL;
+    }
+
     unsigned char *body = (unsigned char *) frame->body;
 
     memcpy(&disassoc->fixed_parameters, body, sizeof(struct libwifi_disassoc_fixed_parameters));
     body += sizeof(struct libwifi_disassoc_fixed_parameters);
-
-    memcpy(&disassoc->tags, body, tags_len);
-    body += tags_len;
+    disassoc->tags.parameters = malloc(tags_len);
+    memcpy(disassoc->tags.parameters, body, tags_len);
+    memcpy(&disassoc->tags.length, &tags_len, sizeof(tags_len));
 
     return 0;
 }

@@ -22,4 +22,10 @@
 
 int libwifi_parse_deauth(struct libwifi_parsed_deauth *deauth, struct libwifi_frame *frame);
 
+static inline void libwifi_free_parse_deauth(struct libwifi_parsed_deauth *deauth) {
+    if (deauth->tags.parameters != NULL) {
+        free(deauth->tags.parameters);
+    }
+}
+
 #endif /* LIBWIFI_PARSE_DEAUTH_H */
